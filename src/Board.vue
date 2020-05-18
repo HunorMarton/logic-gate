@@ -30,13 +30,13 @@ const resolveAdditionalData = type => {
 }
 
 const extendComponents = components => {
-  return components.map(c => {
-    const data = resolveAdditionalData(c.type)
+  return components.map(component => {
+    const data = resolveAdditionalData(component.type)
 
     return {
-      ...c,
+      ...component,
       ...data,
-      model: new data.model(c.props)
+      model: new data.model(component.props)
     }
   })
 }
@@ -78,39 +78,51 @@ export default {
     }
   },
   created() {
-    this.connections.forEach(c => {
+    this.connections.forEach(connection => {
       // Connect models
-      this.components2[c.input.c].model.connect(
-        c.input.i,
-        this.components2[c.output.c].model,
-        c.output.o
+      this.components2[connection.input.c].model.connect(
+        connection.input.i,
+        this.components2[connection.output.c].model,
+        connection.output.o
       )
     })
   },
   computed: {
     connectionTarget() {
       if (!this.connectionSource) return undefined
-      const tx = this.connectionSource.x + this.connectionSource.dx
-      const ty = this.connectionSource.y + this.connectionSource.dy
+      const targetX = this.connectionSource.x + this.connectionSource.dx
+      const targetY = this.connectionSource.y + this.connectionSource.dy
 
-      const distance = (x1, y1, x2, y2) =>
+      const distance = ({ x: x1, y: y1 }, { x: x2, y: y2 }) =>
         Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2))
 
       const componentInputs = this.components2
-        .map((c, index) => ({ ...c, index }))
+        // Add component index
+        .map((component, index) => ({ ...component, index }))
         // Filter out the ones that have no input
-        .filter(c => c.i)
+        .filter(component => component.inputs)
         // Flatmap component - input pairs
-        .flatMap(c => Object.entries(c.i).map(i => ({ c, i })))
-        // Filter out the ones who's input is close enough
+        .flatMap(component =>
+          Object.entries(component.inputs).map(([inputKey, input]) => ({
+            component,
+            inputKey,
+            input
+          }))
+        )
         .filter(
-          ({ c, i: [, i] }) => distance(tx, ty, c.x + i.x, c.y + i.y) < 10
+          // eslint-disable-next-line no-unused-vars
+          ({ component, inputKey, input }) =>
+            distance(
+              { x: targetX, y: targetY },
+              { x: component.x + input.x, y: component.y + input.y }
+            ) < 10
         )
         // Map to component model - input key pairs
-        .map(({ c, i: [key] }) => ({
-          index: c.index,
-          model: c.model,
-          i: key
+        // eslint-disable-next-line no-unused-vars
+        .map(({ component, inputKey, input }) => ({
+          index: component.index,
+          model: component.model,
+          inputKey
         }))[0]
 
       console.log(componentInputs)
@@ -124,14 +136,14 @@ export default {
       component.x += dx
       component.y += dy
     },
-    startConnection(index, model, oKey, o) {
+    startConnection(index, outputKey) {
       const component = this.components2[index]
       this.connectionSource = {
         index,
-        model,
-        o: oKey,
-        x: component.x + o.x,
-        y: component.y + o.y,
+        model: component.model,
+        outputKey,
+        x: component.x + component.outputs[outputKey].x,
+        y: component.y + component.outputs[outputKey].y,
         dx: 0,
         dy: 0
       }
@@ -144,7 +156,7 @@ export default {
         console.log(
           'target found',
           this.connectionTarget.index,
-          this.connectionTarget.i
+          this.connectionTarget.inputKey
         )
     },
     endConnection() {
@@ -152,23 +164,23 @@ export default {
         console.log(
           'target found',
           this.connectionSource.index,
-          this.connectionSource.o,
+          this.connectionSource.outputKey,
           this.connectionTarget.index,
-          this.connectionTarget.i
+          this.connectionTarget.inputKey
         )
         this.connectionTarget.model.connect(
-          this.connectionTarget.i,
+          this.connectionTarget.inputKey,
           this.connectionSource.model,
-          this.connectionSource.o
+          this.connectionSource.outputKey
         )
         this.connections2.push({
           output: {
             c: this.connectionSource.index,
-            o: this.connectionSource.o
+            o: this.connectionSource.outputKey
           },
           input: {
             c: this.connectionTarget.index,
-            i: this.connectionTarget.i
+            i: this.connectionTarget.inputKey
           }
         })
       } else console.log('no target found')
@@ -187,30 +199,30 @@ export default {
 <template lang="pug">
 g
   Draggable(
-    v-for="(c, index) in components2" :key="index"
-    :x="c.x" :y="c.y" :r="15"
+    v-for="(component, index) in components2" :key="index"
+    :x="component.x" :y="component.y" :r="15"
     :disabled="mode == 'select'"
     @drag="drag(index, $event)"
   )
     g
       component(
-        :is="c.type"
+        :is="component.type"
         :index="index"
-        :model="c.model"
+        :model="component.model"
       )
       Draggable(
-        v-for="(o,key) in c.o" :key="key"
-        :x="o.x" :y="o.y" :r="5"
-        @dragstart="startConnection(index, c.model, key, o)"
+        v-for="(output, outputKey) in component.outputs" :key="outputKey"
+        :x="output.x" :y="output.y" :r="5"
+        @dragstart="startConnection(index, outputKey)"
         @drag="drawConnection($event)"
         @dragend="endConnection()"
       )
   Connection(
-    v-for="c in connections2" :key="`${c.output}-${c.input}`"
-    :x1="components2[c.output.c].x + components2[c.output.c].o[c.output.o].x"
-    :y1="components2[c.output.c].y + components2[c.output.c].o[c.output.o].y"
-    :x2="components2[c.input.c].x + components2[c.input.c].i[c.input.i].x"
-    :y2="components2[c.input.c].y + components2[c.input.c].i[c.input.i].y"
+    v-for="connection in connections2" :key="`${connection.output}-${connection.input}`"
+    :x1="components2[connection.output.c].x + components2[connection.output.c].outputs[connection.output.o].x"
+    :y1="components2[connection.output.c].y + components2[connection.output.c].outputs[connection.output.o].y"
+    :x2="components2[connection.input.c].x + components2[connection.input.c].inputs[connection.input.i].x"
+    :y2="components2[connection.input.c].y + components2[connection.input.c].inputs[connection.input.i].y"
   )
   Connection(
     v-if="connectionSource"

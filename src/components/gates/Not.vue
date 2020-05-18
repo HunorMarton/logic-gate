@@ -4,10 +4,10 @@ import { Not as model } from '../../model'
 export default {
   extraData: {
     model,
-    o: {
+    outputs: {
       q: { x: 25, y: 0 }
     },
-    i: {
+    inputs: {
       a: { x: -25, y: 0 }
     }
   }

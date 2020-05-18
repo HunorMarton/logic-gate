@@ -20,7 +20,7 @@ export default {
   },
   extraData: {
     model,
-    o: {
+    outputs: {
       q: { x: 25, y: 0 }
     }
   }
