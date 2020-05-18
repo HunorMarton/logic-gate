@@ -97,6 +97,7 @@ export default {
         Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2))
 
       const componentInputs = this.components2
+        .map((c, index) => ({ ...c, index }))
         // Filter out the ones that have no input
         .filter(c => c.i)
         // Flatmap component - input pairs
@@ -106,7 +107,11 @@ export default {
           ({ c, i: [, i] }) => distance(tx, ty, c.x + i.x, c.y + i.y) < 10
         )
         // Map to component model - input key pairs
-        .map(({ c, i: [key] }) => ({ model: c.model, i: key }))[0]
+        .map(({ c, i: [key] }) => ({
+          index: c.index,
+          model: c.model,
+          i: key
+        }))[0]
 
       console.log(componentInputs)
 
@@ -114,15 +119,15 @@ export default {
     }
   },
   methods: {
-    drag(id, { dx, dy }) {
-      const component = this.components2.find(c => c.model.id == id)
+    drag(index, { dx, dy }) {
+      const component = this.components2[index]
       component.x += dx
       component.y += dy
     },
-    startConnection(model, oKey, o) {
-      const component = this.components2.find(c => c.model.id == model.id)
+    startConnection(index, model, oKey, o) {
+      const component = this.components2[index]
       this.connectionSource = {
-        source: model.id,
+        index,
         model,
         o: oKey,
         x: component.x + o.x,
@@ -138,7 +143,7 @@ export default {
       if (this.connectionTarget)
         console.log(
           'target found',
-          this.connectionTarget.model.id,
+          this.connectionTarget.index,
           this.connectionTarget.i
         )
     },
@@ -146,9 +151,9 @@ export default {
       if (this.connectionTarget) {
         console.log(
           'target found',
-          this.connectionSource.model.id,
+          this.connectionSource.index,
           this.connectionSource.o,
-          this.connectionTarget.model.id,
+          this.connectionTarget.index,
           this.connectionTarget.i
         )
         this.connectionTarget.model.connect(
@@ -158,17 +163,16 @@ export default {
         )
         this.connections2.push({
           output: {
-            c: this.connectionSource.model.id, // This should be index
+            c: this.connectionSource.index,
             o: this.connectionSource.o
           },
           input: {
-            c: this.connectionTarget.model.id, // This should be index
+            c: this.connectionTarget.index,
             i: this.connectionTarget.i
           }
         })
       } else console.log('no target found')
 
-      // TODO: Move back from component id to index
       // TODO: Fix adding new connection
       // TODO: Disable drag circles when drawing connections
       // TODO: Highlight a connection when close enough
@@ -183,20 +187,21 @@ export default {
 <template lang="pug">
 g
   Draggable(
-    v-for="c in components2" :key="c.model.id"
+    v-for="(c, index) in components2" :key="index"
     :x="c.x" :y="c.y" :r="15"
     :disabled="mode == 'select'"
-    @drag="drag(c.model.id, $event)"
+    @drag="drag(index, $event)"
   )
     g
       component(
         :is="c.type"
+        :index="index"
         :model="c.model"
       )
       Draggable(
         v-for="(o,key) in c.o" :key="key"
         :x="o.x" :y="o.y" :r="5"
-        @dragstart="startConnection(c.model, key, o)"
+        @dragstart="startConnection(index, c.model, key, o)"
         @drag="drawConnection($event)"
         @dragend="endConnection()"
       )

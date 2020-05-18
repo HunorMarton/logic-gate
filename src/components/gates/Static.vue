@@ -4,6 +4,10 @@ import { Static as model } from '../../model'
 export default {
   name: 'Static',
   props: {
+    index: {
+      type: Number,
+      required: true
+    },
     model: {
       type: Object,
       required: true
@@ -37,7 +41,7 @@ g(
 
     M 20 0 L 50 0`)
   text(x="40" y="-5") {{ model.outputs.q == undefined ? 'x' : Number(model.outputs.q) }}
-  text(x="40" y="15" font-size="8") {{ model.id }}
+  text(x="40" y="15" font-size="8") {{ index }}
 </template>
 
 <style lang="scss" scoped>

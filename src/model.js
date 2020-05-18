@@ -1,6 +1,7 @@
 let idIncrement = 0
 
 function Component() {
+  // This is used only for debugging
   this.id = idIncrement++
 
   this.inputs = {
