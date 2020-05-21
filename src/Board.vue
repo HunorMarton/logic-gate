@@ -233,7 +233,6 @@ export default {
       // TODO: Delete connection circle
       // TODO: Highlight connection on delete circle hover
       // TODO: Drag new items to the circle
-      // TODO: Smarter routes
 
       this.connectionSource = undefined
     }
@@ -274,7 +273,7 @@ g
         @dragend="endConnection()"
       )
   Connection(
-    v-for="connection in connections2" :key="`${connection.output}-${connection.input}`"
+    v-for="connection in connections2" :key="`${connection.output.c}-${connection.input.c}`"
     :x1="components2[connection.output.c].x + components2[connection.output.c].outputs[connection.output.o].x"
     :y1="components2[connection.output.c].y + components2[connection.output.c].outputs[connection.output.o].y"
     :x2="components2[connection.input.c].x + components2[connection.input.c].inputs[connection.input.i].x"

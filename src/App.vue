@@ -221,8 +221,8 @@ div
   svg.main(width="600" height="1200")
     Board(
       :mode="mode"
-      :components="boards[2].components"
-      :connections="boards[2].connections"
+      :components="boards[3].components"
+      :connections="boards[3].connections"
       transform="translate(50, 50)"
     )
 </template>
