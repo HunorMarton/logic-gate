@@ -13,6 +13,10 @@ export default {
       type: Number,
       required: true
     },
+    color: {
+      type: String,
+      default: 'gray'
+    },
     disabled: {
       type: Boolean,
       default: false
@@ -62,6 +66,7 @@ g(:transform="`translate(${x} ${y})`")
   circle.draggable(
     ref="draggable"
     :class="{ disabled }"
+    :style="{ fill: color }"
     :r="r" :cx="0" :cy="0")
 </template>
 

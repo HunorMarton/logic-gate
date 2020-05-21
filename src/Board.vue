@@ -29,16 +29,31 @@ const resolveAdditionalData = type => {
   }
 }
 
-const extendComponents = components => {
-  return components.map(component => {
-    const data = resolveAdditionalData(component.type)
+// eslint-disable-next-line no-unused-vars
+const extendComponents = (components, connections) => {
+  const extendedComponents = components.map((component, index) => {
+    const { model, inputs, outputs } = resolveAdditionalData(component.type)
 
     return {
       ...component,
-      ...data,
-      model: new data.model(component.props)
+      index,
+      inputs,
+      outputs,
+      model: new model(component.props)
     }
   })
+
+  // Mark inputs/outputs that are used
+  connections.forEach(connection => {
+    extendedComponents[connection.input.c].inputs[
+      connection.input.i
+    ].used = true
+    extendedComponents[connection.output.c].outputs[
+      connection.output.o
+    ].used = true
+  })
+
+  return extendedComponents
 }
 
 export default {
@@ -72,7 +87,7 @@ export default {
   },
   data() {
     return {
-      components2: extendComponents(this.components),
+      components2: extendComponents(this.components, this.connections),
       connections2: this.connections,
       connectionSource: undefined
     }
@@ -93,36 +108,44 @@ export default {
       const targetX = this.connectionSource.x + this.connectionSource.dx
       const targetY = this.connectionSource.y + this.connectionSource.dy
 
+      const targetIsAnInput = this.connectionSource.outbound
+
       const distance = ({ x: x1, y: y1 }, { x: x2, y: y2 }) =>
         Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2))
 
       const componentInputs = this.components2
-        // Add component index
-        .map((component, index) => ({ ...component, index }))
-        // Filter out the ones that have no input
-        .filter(component => component.inputs)
-        // Flatmap component - input pairs
+        // Filter out the ones that have no input/output
+        .filter(component =>
+          targetIsAnInput ? component.inputs : component.outputs
+        )
+        // Flatmap component - input/output pairs
         .flatMap(component =>
-          Object.entries(component.inputs).map(([inputKey, input]) => ({
+          Object.entries(
+            targetIsAnInput ? component.inputs : component.outputs
+          ).map(([ioKey, io]) => ({
             component,
-            inputKey,
-            input
+            ioKey,
+            io
           }))
         )
+        // Filter out inputs that are already taken
         .filter(
           // eslint-disable-next-line no-unused-vars
-          ({ component, inputKey, input }) =>
+          ({ component, ioKey, io }) => (targetIsAnInput ? !io.used : true)
+        )
+        // Filter out inputs that are not close enough
+        .filter(
+          // eslint-disable-next-line no-unused-vars
+          ({ component, ioKey, io }) =>
             distance(
               { x: targetX, y: targetY },
-              { x: component.x + input.x, y: component.y + input.y }
+              { x: component.x + io.x, y: component.y + io.y }
             ) < 10
         )
         // Map to component model - input key pairs
-        // eslint-disable-next-line no-unused-vars
-        .map(({ component, inputKey, input }) => ({
+        .map(({ component, ioKey }) => ({
           index: component.index,
-          model: component.model,
-          inputKey
+          ioKey
         }))[0]
 
       console.log(componentInputs)
@@ -136,14 +159,18 @@ export default {
       component.x += dx
       component.y += dy
     },
-    startConnection(index, outputKey) {
+    startConnection(index, ioKey, outbound) {
       const component = this.components2[index]
+      const offset = outbound
+        ? component.outputs[ioKey]
+        : component.inputs[ioKey]
+
       this.connectionSource = {
         index,
-        model: component.model,
-        outputKey,
-        x: component.x + component.outputs[outputKey].x,
-        y: component.y + component.outputs[outputKey].y,
+        ioKey,
+        outbound,
+        x: component.x + offset.x,
+        y: component.y + offset.y,
         dx: 0,
         dy: 0
       }
@@ -154,41 +181,59 @@ export default {
 
       if (this.connectionTarget)
         console.log(
-          'target found',
+          'target found:',
           this.connectionTarget.index,
-          this.connectionTarget.inputKey
+          this.connectionTarget.ioKey
         )
     },
     endConnection() {
       if (this.connectionTarget) {
         console.log(
-          'target found',
+          'target found:',
           this.connectionSource.index,
-          this.connectionSource.outputKey,
+          this.connectionSource.ioKey,
+          '->',
           this.connectionTarget.index,
-          this.connectionTarget.inputKey
+          this.connectionTarget.ioKey
         )
-        this.connectionTarget.model.connect(
-          this.connectionTarget.inputKey,
-          this.connectionSource.model,
-          this.connectionSource.outputKey
+
+        const output = this.connectionSource.outbound
+          ? this.connectionSource
+          : this.connectionTarget
+        const input = this.connectionSource.outbound
+          ? this.connectionTarget
+          : this.connectionSource
+
+        const inputComponent = this.components2[input.index]
+        const outputComponent = this.components2[output.index]
+
+        inputComponent.model.connect(
+          input.ioKey,
+          outputComponent.model,
+          output.ioKey
         )
+
+        inputComponent.inputs[input.ioKey].used = true
+        inputComponent.outputs[output.ioKey].used = true
+
         this.connections2.push({
           output: {
-            c: this.connectionSource.index,
-            o: this.connectionSource.outputKey
+            c: output.index,
+            o: output.ioKey
           },
           input: {
-            c: this.connectionTarget.index,
-            i: this.connectionTarget.inputKey
+            c: input.index,
+            i: input.ioKey
           }
         })
       } else console.log('no target found')
 
-      // TODO: Fix adding new connection
+      // TODO: Delete mode
       // TODO: Disable drag circles when drawing connections
-      // TODO: Highlight a connection when close enough
-      // TODO: Filter out if connection already connected
+      // TODO: Delete connection circle
+      // TODO: Highlight connection on delete circle hover
+      // TODO: Drag new items to the circle
+      // TODO: Smarter routes
 
       this.connectionSource = undefined
     }
@@ -200,7 +245,7 @@ export default {
 g
   Draggable(
     v-for="(component, index) in components2" :key="index"
-    :x="component.x" :y="component.y" :r="15"
+    :x="component.x" :y="component.y" :r="10"
     :disabled="mode == 'select'"
     @drag="drag(index, $event)"
   )
@@ -212,8 +257,19 @@ g
       )
       Draggable(
         v-for="(output, outputKey) in component.outputs" :key="outputKey"
+        v-if="!connectionSource || !connectionSource.outbound || (connectionSource.index == index && connectionSource.ioKey == outputKey)"
         :x="output.x" :y="output.y" :r="5"
-        @dragstart="startConnection(index, outputKey)"
+        :color="connectionTarget && connectionTarget.index == index && connectionTarget.ioKey == outputKey ? 'green' : 'gray'"
+        @dragstart="startConnection(index, outputKey, true)"
+        @drag="drawConnection($event)"
+        @dragend="endConnection()"
+      )
+      Draggable(
+        v-for="(input, inputKey) in component.inputs" :key="inputKey"
+        v-if="!input.used && (!connectionSource || connectionSource.outbound || (connectionSource.index == index && connectionSource.ioKey == inputKey))"
+        :x="input.x" :y="input.y" :r="5"
+        :color="connectionTarget && connectionTarget.index == index && connectionTarget.ioKey == inputKey ? 'green' : 'gray'"
+        @dragstart="startConnection(index, inputKey, false)"
         @drag="drawConnection($event)"
         @dragend="endConnection()"
       )
