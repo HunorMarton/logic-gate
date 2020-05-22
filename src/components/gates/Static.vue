@@ -36,23 +36,24 @@ g(
   transform="translate(-25)"
   @click="toggle"
 )
-  path(
-    d=`
-      M 0 -10
-      L 0 10
-      L 20 10
-      L 20 -10
-      L 0 -10`
+  circle(v-if="this.model" cx="3" cy="0" r="10")
+  rect(
+    x="-4" y="-7" width="14" height="14"
     :class="{ fillOn: outputs && outputs.q }"
   )
-  path(d=`M 20 0 L 50 0` :class="{ on: outputs && outputs.q }")
+  path(d=`M 10 0 L 50 0` :class="{ on: outputs && outputs.q }")
   text(v-if="index != undefined" x="25" y="25" font-size="8") {{ index }}
 </template>
 
 <style lang="scss" scoped>
-path {
+circle {
+  fill: #404e7c;
+  stroke: none;
+  opacity: 0.1;
+}
+
+rect {
   cursor: pointer;
-  fill: #fff;
 }
 
 .fillOn {
