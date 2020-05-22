@@ -273,7 +273,6 @@ export default {
       } else console.log('no target found')
 
       // TODO: Delete mode
-      // TODO: Disable drag circles when drawing connections
       // TODO: Delete connection circle
       // TODO: Highlight connection on delete circle hover
 
@@ -295,7 +294,7 @@ g
     v-for="(component, index) in components2" :key="index"
     :x="component.x" :y="component.y" :r="10"
     :zoom="zoom"
-    :disabled="mode == 'select'"
+    :disabled="mode == 'select' || !!connectionSource"
     @drag="drag(index, $event)"
   )
     g
