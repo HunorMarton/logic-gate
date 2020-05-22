@@ -5,15 +5,17 @@ import binaryAdder from '../data/binary-adder'
 import binaryDecoder from '../data/binary-decoder'
 import digitalComparator from '../data/digital-comparator'
 import dFlipFlop from '../data/d-flip-flop'
+import multiplexer from '../data/multiplexer'
 
 export default {
   data: () => ({
-    selected: 0,
+    selected: 4,
     menu: [
       { title: 'Binary adder', data: binaryAdder },
       { title: 'Binary decoder', data: binaryDecoder },
       { title: 'Digital comparator', data: digitalComparator },
-      { title: 'D flip-flop', data: dFlipFlop }
+      { title: 'D flip-flop', data: dFlipFlop },
+      { title: 'Multiplexer', data: multiplexer }
     ]
   }),
   created() {

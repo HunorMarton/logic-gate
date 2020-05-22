@@ -347,7 +347,7 @@ g
         @dragend="endConnection()"
       )
   Connection(
-    v-for="connection in connections2" :key="`${connection.output.c}-${connection.input.c}`"
+    v-for="connection in connections2" :key="`${connection.output.c}-${connection.output.o}-${connection.input.c}-${connection.input.i}`"
     :x1="components2[connection.output.c].x + components2[connection.output.c].outputs[connection.output.o].x"
     :y1="components2[connection.output.c].y + components2[connection.output.c].outputs[connection.output.o].y"
     :x2="components2[connection.input.c].x + components2[connection.input.c].inputs[connection.input.i].x"
