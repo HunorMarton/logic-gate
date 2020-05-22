@@ -299,15 +299,20 @@ g
         :index="index"
         :model="component.model"
       )
-      Draggable(
-        v-for="(output, outputKey) in component.outputs" :key="outputKey"
-        v-if="!connectionSource || !connectionSource.outbound || (connectionSource.index == index && connectionSource.ioKey == outputKey)"
-        :x="output.x" :y="output.y" :r="5"
-        :color="connectionTarget && connectionTarget.index == index && connectionTarget.ioKey == outputKey ? 'green' : 'gray'"
-        @dragstart="startConnection(index, outputKey, true)"
-        @drag="drawConnection($event)"
-        @dragend="endConnection()"
-      )
+      template(v-for="(output, outputKey) in component.outputs")
+        text(
+          :key="`text-${outputKey}`"
+          :x="output.x" :y="output.y - 5" text-anchor="end"
+        ) {{ component.model.outputs[outputKey] == undefined ? 'x' : Number(component.model.outputs[outputKey]) }}
+        Draggable(
+          :key="`draggable-${outputKey}`"
+          v-if="!connectionSource || !connectionSource.outbound || (connectionSource.index == index && connectionSource.ioKey == outputKey)"
+          :x="output.x" :y="output.y" :r="5"
+          :color="connectionTarget && connectionTarget.index == index && connectionTarget.ioKey == outputKey ? 'green' : 'gray'"
+          @dragstart="startConnection(index, outputKey, true)"
+          @drag="drawConnection($event)"
+          @dragend="endConnection()"
+        )
       Draggable(
         v-for="(input, inputKey) in component.inputs" :key="inputKey"
         v-if="!input.used && (!connectionSource || connectionSource.outbound || (connectionSource.index == index && connectionSource.ioKey == inputKey))"
