@@ -6,11 +6,11 @@ export default {
   props: {
     index: {
       type: Number,
-      required: true
+      default: undefined
     },
     model: {
       type: Object,
-      required: true
+      default: undefined
     }
   },
   methods: {
@@ -40,8 +40,8 @@ g(
     L 0 -10
 
     M 20 0 L 50 0`)
-  text(x="40" y="-5") {{ model.outputs.q == undefined ? 'x' : Number(model.outputs.q) }}
-  text(x="40" y="15" font-size="8") {{ index }}
+  text(v-if="model" x="40" y="-5") {{ model.outputs.q == undefined ? 'x' : Number(model.outputs.q) }}
+  text(v-if="index != undefined" x="40" y="15" font-size="8") {{ index }}
 </template>
 
 <style lang="scss" scoped>

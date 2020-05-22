@@ -1,4 +1,6 @@
 <script>
+import Sidebar from './components/Sidebar.vue'
+
 import Static from './components/gates/Static.vue'
 import Not from './components/gates/Not.vue'
 import And from './components/gates/And.vue'
@@ -29,19 +31,25 @@ const resolveAdditionalData = type => {
   }
 }
 
-// eslint-disable-next-line no-unused-vars
-const extendComponents = (components, connections) => {
-  const extendedComponents = components.map((component, index) => {
-    const { model, inputs, outputs } = resolveAdditionalData(component.type)
+const extendComponent = (component, index) => {
+  const additionalData = resolveAdditionalData(component.type)
 
-    return {
-      ...component,
-      index,
-      inputs,
-      outputs,
-      model: new model(component.props)
-    }
-  })
+  const inputs =
+    additionalData.inputs && JSON.parse(JSON.stringify(additionalData.inputs))
+  const outputs =
+    additionalData.outputs && JSON.parse(JSON.stringify(additionalData.outputs))
+
+  return {
+    ...component,
+    index,
+    inputs,
+    outputs,
+    model: new additionalData.model(component.props)
+  }
+}
+
+const extendComponents = (components, connections) => {
+  const extendedComponents = components.map(extendComponent)
 
   // Mark inputs/outputs that are used
   connections.forEach(connection => {
@@ -59,6 +67,8 @@ const extendComponents = (components, connections) => {
 export default {
   name: 'App',
   components: {
+    Sidebar,
+
     Static,
     Not,
     And,
@@ -89,7 +99,10 @@ export default {
     return {
       components2: extendComponents(this.components, this.connections),
       connections2: this.connections,
-      connectionSource: undefined
+      connectionSource: undefined,
+      addedGateIndex: undefined,
+      addedGateOffsetX: undefined,
+      addedGateOffsetY: undefined
     }
   },
   created() {
@@ -154,6 +167,33 @@ export default {
     }
   },
   methods: {
+    addGate(type, x, y) {
+      const index = this.components2.length
+      const component = extendComponent({ type, x, y }, index)
+      this.components2.push(component)
+      this.addedGateIndex = index
+      this.addedGateOffsetX = 0
+      this.addedGateOffsetY = 0
+    },
+    dragAddedGate({ dx, dy }) {
+      const component = this.components2[this.addedGateIndex]
+      component.x += dx
+      component.y += dy
+      this.addedGateOffsetX += dx
+      this.addedGateOffsetY += dy
+    },
+    gateAdded() {
+      const dx = this.addedGateOffsetX
+      const dy = this.addedGateOffsetY
+
+      if (Math.sqrt(Math.pow(dx, 2) * Math.pow(dy, 2)) < 10) {
+        // TODO: Remove item
+      }
+
+      this.addedGateIndex = undefined
+      this.addedGateOffsetX = undefined
+      this.addedGateOffsetY = undefined
+    },
     drag(index, { dx, dy }) {
       const component = this.components2[index]
       component.x += dx
@@ -232,7 +272,7 @@ export default {
       // TODO: Disable drag circles when drawing connections
       // TODO: Delete connection circle
       // TODO: Highlight connection on delete circle hover
-      // TODO: Drag new items to the circle
+      // TODO: Move gate labels outside of the gate definition(?)
 
       this.connectionSource = undefined
     }
@@ -242,6 +282,11 @@ export default {
 
 <template lang="pug">
 g
+  Sidebar(
+    @addGate="addGate"
+    @dragAddedGate="dragAddedGate"
+    @gateAdded="gateAdded"
+  )
   Draggable(
     v-for="(component, index) in components2" :key="index"
     :x="component.x" :y="component.y" :r="10"

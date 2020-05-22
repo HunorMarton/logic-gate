@@ -28,6 +28,6 @@ g(transform="translate(-25)")
     M 39 0 L 50 0`)
 
   circle(r="3" cx="36" cy="0")
-  text(x="40" y="-5") {{ props.model.outputs.q == undefined ? 'x' : Number(props.model.outputs.q) }}
-  text(x="40" y="15" font-size="8") {{ props.index }}
+  text(v-if="props.model" x="40" y="-5") {{ props.model.outputs.q == undefined ? 'x' : Number(props.model.outputs.q) }}
+  text(v-if="props.index != undefined" x="40" y="15" font-size="8") {{ props.index }}
 </template>

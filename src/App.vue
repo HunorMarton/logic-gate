@@ -9,29 +9,29 @@ export default {
     Board
   },
   data: () => ({
-    mode: 'select',
+    mode: 'move',
     boards: [
       {
         components: [
           {
             type: 'static',
-            x: 0,
+            x: 100,
             y: 0,
             props: false
           },
           {
             type: 'not',
-            x: 100,
+            x: 200,
             y: 0
           },
           {
             type: 'and',
-            x: 200,
+            x: 300,
             y: 50
           },
           {
             type: 'or',
-            x: 200,
+            x: 300,
             y: 100
           }
         ],
@@ -47,45 +47,45 @@ export default {
         components: [
           {
             type: 'static',
-            x: 10,
+            x: 110,
             y: 0,
             props: false
           },
           {
             type: 'static',
-            x: 0,
+            x: 100,
             y: 50,
             props: false
           },
 
           {
             type: 'not',
-            x: 100,
+            x: 200,
             y: 0
           },
           {
             type: 'and',
-            x: 100,
+            x: 200,
             y: 50
           },
           {
             type: 'nand',
-            x: 100,
+            x: 200,
             y: 100
           },
           {
             type: 'or',
-            x: 100,
+            x: 200,
             y: 150
           },
           {
             type: 'nor',
-            x: 100,
+            x: 200,
             y: 200
           },
           {
             type: 'xor',
-            x: 100,
+            x: 200,
             y: 250
           }
         ],
@@ -109,39 +109,39 @@ export default {
         components: [
           {
             type: 'static',
-            x: 10,
+            x: 110,
             y: 0,
             props: false
           },
 
           {
             type: 'not',
-            x: 100,
+            x: 200,
             y: 0
           },
           {
             type: 'and',
-            x: 100,
+            x: 200,
             y: 50
           },
           {
             type: 'nand',
-            x: 100,
+            x: 200,
             y: 100
           },
           {
             type: 'or',
-            x: 100,
+            x: 200,
             y: 150
           },
           {
             type: 'nor',
-            x: 100,
+            x: 200,
             y: 200
           },
           {
             type: 'xor',
-            x: 100,
+            x: 200,
             y: 250
           }
         ],
@@ -157,39 +157,39 @@ export default {
         components: [
           {
             type: 'static',
-            x: 0,
+            x: 100,
             y: 0,
             props: false
           },
           {
             type: 'static',
-            x: 10,
+            x: 110,
             y: 150,
             props: true
           },
           {
             type: 'not',
-            x: 70,
+            x: 170,
             y: 50
           },
           {
             type: 'nand',
-            x: 150,
+            x: 250,
             y: 5
           },
           {
             type: 'nand',
-            x: 240,
+            x: 340,
             y: 10
           },
           {
             type: 'nand',
-            x: 150,
+            x: 250,
             y: 145
           },
           {
             type: 'nand',
-            x: 250,
+            x: 350,
             y: 140
           }
         ],
@@ -221,8 +221,8 @@ div
   svg.main(width="600" height="1200")
     Board(
       :mode="mode"
-      :components="boards[3].components"
-      :connections="boards[3].connections"
+      :components="boards[2].components"
+      :connections="boards[2].connections"
       transform="translate(50, 50)"
     )
 </template>

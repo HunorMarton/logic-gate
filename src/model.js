@@ -51,7 +51,7 @@ Component.prototype.connect = function(input, component, output) {
   this.trigger()
 }
 
-export function Static(value) {
+export function Static(value = false) {
   let v = value
   Object.defineProperty(this, 'value', {
     get: () => v,
