@@ -13,6 +13,10 @@ export default {
       type: Number,
       required: true
     },
+    zoom: {
+      type: Number,
+      default: 1
+    },
     color: {
       type: String,
       default: 'gray'
@@ -41,8 +45,8 @@ export default {
     },
     onMouseMove() {
       if (this.dragging) {
-        const dx = event.clientX - this.prevX
-        const dy = event.clientY - this.prevY
+        const dx = (event.clientX - this.prevX) / this.zoom
+        const dy = (event.clientY - this.prevY) / this.zoom
 
         this.$emit('drag', { dx, dy })
 

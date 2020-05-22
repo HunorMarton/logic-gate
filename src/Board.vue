@@ -93,6 +93,10 @@ export default {
     mode: {
       type: String,
       required: true
+    },
+    zoom: {
+      type: Number,
+      default: 1
     }
   },
   data() {
@@ -282,6 +286,7 @@ export default {
 <template lang="pug">
 g
   Sidebar(
+    :zoom="zoom"
     @addGate="addGate"
     @dragAddedGate="dragAddedGate"
     @gateAdded="gateAdded"
@@ -289,6 +294,7 @@ g
   Draggable(
     v-for="(component, index) in components2" :key="index"
     :x="component.x" :y="component.y" :r="10"
+    :zoom="zoom"
     :disabled="mode == 'select'"
     @drag="drag(index, $event)"
   )
@@ -309,6 +315,7 @@ g
           :key="`draggable-${outputKey}`"
           v-if="!connectionSource || !connectionSource.outbound || (connectionSource.index == index && connectionSource.ioKey == outputKey)"
           :x="output.x" :y="output.y" :r="5"
+          :zoom="zoom"
           :color="connectionTarget && connectionTarget.index == index && connectionTarget.ioKey == outputKey ? 'green' : 'gray'"
           @dragstart="startConnection(index, outputKey, true)"
           @drag="drawConnection($event)"
@@ -318,6 +325,7 @@ g
         v-for="(input, inputKey) in component.inputs" :key="inputKey"
         v-if="!input.used && (!connectionSource || connectionSource.outbound || (connectionSource.index == index && connectionSource.ioKey == inputKey))"
         :x="input.x" :y="input.y" :r="5"
+        :zoom="zoom"
         :color="connectionTarget && connectionTarget.index == index && connectionTarget.ioKey == inputKey ? 'green' : 'gray'"
         @dragstart="startConnection(index, inputKey, false)"
         @drag="drawConnection($event)"

@@ -21,6 +21,12 @@ export default {
 
     Draggable
   },
+  props: {
+    zoom: {
+      type: Number,
+      default: 1
+    }
+  },
   data: () => ({
     baseOffset: {
       x: 0,
@@ -56,6 +62,7 @@ export default {
     Draggable(
       v-for="gate in gates"
       :x="0" :y="gate.offset" :r="20"
+      :zoom="zoom"
       @dragstart="dragstart(gate.type, gate.offset)"
       @drag="drag($event)"
       @dragend="dragend"
