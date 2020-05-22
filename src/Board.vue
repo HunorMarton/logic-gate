@@ -302,6 +302,7 @@ g
       component(
         :is="component.type"
         :index="index"
+        :model="component.model"
         :inputs="Object.fromEntries(Object.entries(component.model.inputs).map(([inputKey, { c, o }]) => [inputKey, c.outputs[o]]))"
         :outputs="component.model.outputs"
       )
