@@ -285,10 +285,8 @@ export default {
 
       // TODO: Delete component
       // TODO: Delete connection (Highlight connection on delete circle hover)
-      // TODO: Make svg fill the screen
+      // TODO: Make svg fill the screen, footer with about
       // TODO: Make sidebar nicer
-      // TODO: Add header with board selector, footer with about
-      // TODO: Add labels to inputs and outputs
       // TODO: Add label popup when gateAdded
       // TODO: Hide id behind a debug flag (or just make it gray)
 
@@ -317,6 +315,7 @@ g
       component(
         :is="component.type"
         :index="index"
+        :label="component.label"
         :model="component.model"
         :inputs="Object.fromEntries(Object.entries(component.model.inputs).map(([inputKey, { c, o }]) => [inputKey, c.outputs[o]]))"
         :outputs="component.model.outputs"

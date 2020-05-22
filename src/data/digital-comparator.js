@@ -1,8 +1,8 @@
 export default {
   components: [
     // 0
-    { type: 'static', x: 100, y: 10 },
-    { type: 'static', x: 110, y: 170 },
+    { type: 'static', label: 'A', x: 100, y: 10 },
+    { type: 'static', label: 'B', x: 110, y: 170 },
 
     // 2
     { type: 'not', x: 180, y: 10 },
@@ -14,9 +14,9 @@ export default {
     { type: 'nor', x: 300, y: 90 },
 
     // 7
-    { type: 'result', x: 400, y: 40 },
-    { type: 'result', x: 400, y: 90 },
-    { type: 'result', x: 400, y: 140 }
+    { type: 'result', label: 'A < B', x: 400, y: 40 },
+    { type: 'result', label: 'A = B', x: 400, y: 90 },
+    { type: 'result', label: 'A > B', x: 400, y: 140 }
   ],
   connections: [
     { output: { c: 0, o: 'q' }, input: { c: 2, i: 'a' } },

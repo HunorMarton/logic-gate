@@ -12,6 +12,10 @@ export default {
       type: Object,
       default: undefined
     },
+    label: {
+      type: String,
+      default: ''
+    },
     outputs: {
       type: Object,
       default: undefined
@@ -36,6 +40,7 @@ g(
   transform="translate(-25)"
   @click="toggle"
 )
+  text(x="-15" y="0" font-size="10" alignment-baseline="middle" text-anchor="end") {{ label }}
   circle(v-if="this.model" cx="3" cy="0" r="10")
   rect(
     x="-4" y="-7" width="14" height="14"

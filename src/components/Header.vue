@@ -1,4 +1,6 @@
 <script>
+// https://www.electronics-tutorials.ws/combination/comb_2.html
+
 import binaryAdder from '../data/binary-adder'
 import binaryDecoder from '../data/binary-decoder'
 import digitalComparator from '../data/digital-comparator'

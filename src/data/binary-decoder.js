@@ -2,11 +2,13 @@ export default {
   components: [
     {
       type: 'static',
+      label: 'A',
       x: 110,
       y: 5
     },
     {
       type: 'static',
+      label: 'B',
       x: 100,
       y: 105
     },
@@ -42,21 +44,25 @@ export default {
     },
     {
       type: 'result',
+      label: '0',
       x: 370,
       y: 100
     },
     {
       type: 'result',
+      label: '1',
       x: 370,
       y: 150
     },
     {
       type: 'result',
+      label: '2',
       x: 370,
       y: 200
     },
     {
       type: 'result',
+      label: '3',
       x: 370,
       y: 250
     }

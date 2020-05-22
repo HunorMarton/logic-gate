@@ -2,13 +2,15 @@ export default {
   components: [
     {
       type: 'static',
+      label: 'D',
       x: 100,
       y: 0,
       props: false
     },
     {
       type: 'static',
-      x: 200,
+      label: 'Enable',
+      x: 220,
       y: 75,
       props: true
     },
@@ -39,11 +41,13 @@ export default {
     },
     {
       type: 'result',
+      label: 'Q',
       x: 470,
       y: 10
     },
     {
       type: 'result',
+      label: '!Q',
       x: 500,
       y: 140
     }

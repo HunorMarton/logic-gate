@@ -1,11 +1,11 @@
 export default {
   components: [
-    { type: 'static', x: 100, y: 0, props: true },
-    { type: 'static', x: 110, y: 105 },
+    { type: 'static', label: 'A', x: 100, y: 0, props: true },
+    { type: 'static', label: 'B', x: 110, y: 105 },
     { type: 'xor', x: 180, y: 5 },
     { type: 'and', x: 180, y: 100 },
-    { type: 'result', x: 240, y: 5 },
-    { type: 'result', x: 250, y: 100 }
+    { type: 'result', label: 'Sum', x: 240, y: 5 },
+    { type: 'result', label: 'Carry out', x: 250, y: 100 }
   ],
   connections: [
     { output: { c: 0, o: 'q' }, input: { c: 2, i: 'a' } },
