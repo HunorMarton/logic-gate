@@ -163,7 +163,7 @@ export default {
           },
           {
             type: 'static',
-            x: 110,
+            x: 190,
             y: 150,
             props: true
           },
@@ -174,22 +174,22 @@ export default {
           },
           {
             type: 'nand',
-            x: 250,
+            x: 290,
             y: 5
           },
           {
             type: 'nand',
-            x: 340,
+            x: 380,
             y: 10
           },
           {
             type: 'nand',
-            x: 250,
+            x: 290,
             y: 145
           },
           {
             type: 'nand',
-            x: 350,
+            x: 390,
             y: 140
           }
         ],
@@ -221,8 +221,8 @@ div
   svg.main(width="600" height="1200" viewBox="0, 0, 500, 1000")
     Board(
       :mode="mode"
-      :components="boards[2].components"
-      :connections="boards[2].connections"
+      :components="boards[3].components"
+      :connections="boards[3].connections"
       transform="translate(50, 50)"
     )
 </template>
@@ -239,12 +239,12 @@ body {
 .main {
   border: 1px solid #ccc;
   fill: none;
-  stroke: #000;
-  stroke-width: 1.5px;
+  stroke: #404e7c;
+  stroke-width: 1px;
   user-select: none;
 
   text {
-    fill: #000;
+    fill: #404e7c;
     stroke-width: 0;
   }
 }

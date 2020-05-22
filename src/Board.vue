@@ -272,7 +272,6 @@ export default {
       // TODO: Disable drag circles when drawing connections
       // TODO: Delete connection circle
       // TODO: Highlight connection on delete circle hover
-      // TODO: Move gate labels outside of the gate definition(?)
 
       this.connectionSource = undefined
     }
@@ -297,10 +296,12 @@ g
       component(
         :is="component.type"
         :index="index"
-        :model="component.model"
+        :inputs="Object.fromEntries(Object.entries(component.model.inputs).map(([inputKey, { c, o }]) => [inputKey, c.outputs[o]]))"
+        :outputs="component.model.outputs"
       )
       template(v-for="(output, outputKey) in component.outputs")
         text(
+          v-if="false"
           :key="`text-${outputKey}`"
           :x="output.x" :y="output.y - 5" text-anchor="end"
         ) {{ component.model.outputs[outputKey] == undefined ? 'x' : Number(component.model.outputs[outputKey]) }}
@@ -328,6 +329,7 @@ g
     :y1="components2[connection.output.c].y + components2[connection.output.c].outputs[connection.output.o].y"
     :x2="components2[connection.input.c].x + components2[connection.input.c].inputs[connection.input.i].x"
     :y2="components2[connection.input.c].y + components2[connection.input.c].inputs[connection.input.i].y"
+    :on="components2[connection.output.c].model.outputs[connection.output.o]"
   )
   Connection(
     v-if="connectionSource"
@@ -337,3 +339,10 @@ g
     :y2="connectionSource.y + connectionSource.dy"
   )
 </template>
+
+<style lang="scss">
+.on {
+  stroke: #71b48d;
+  stroke-width: 1.5px;
+}
+</style>

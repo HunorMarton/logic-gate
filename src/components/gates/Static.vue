@@ -11,6 +11,10 @@ export default {
     model: {
       type: Object,
       default: undefined
+    },
+    outputs: {
+      type: Object,
+      default: undefined
     }
   },
   methods: {
@@ -37,9 +41,8 @@ g(
     L 0 10
     L 20 10
     L 20 -10
-    L 0 -10
-
-    M 20 0 L 50 0`)
+    L 0 -10`)
+  path(d=`M 20 0 L 50 0` :class="{ on: outputs && outputs.q }")
   text(v-if="index != undefined" x="40" y="15" font-size="8") {{ index }}
 </template>
 

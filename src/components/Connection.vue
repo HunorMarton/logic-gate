@@ -16,6 +16,10 @@ export default {
     y2: {
       type: Number,
       required: true
+    },
+    on: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {
@@ -38,12 +42,11 @@ export default {
 </script>
 
 <template lang="pug">
-  path(:d="path")
+  path(:d="path" :class="{ on }")
 </template>
 
 <style lang="scss" scoped>
 path {
   stroke-linejoin: round;
-  stroke-opacity: 0.1;
 }
 </style>

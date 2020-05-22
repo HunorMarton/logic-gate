@@ -72,7 +72,7 @@ g(:transform="`translate(${x} ${y})`")
 
 <style lang="scss" scoped>
 .draggable {
-  fill: gray;
+  fill: #404e7c;
   stroke: none;
   opacity: 0.1;
   cursor: pointer;

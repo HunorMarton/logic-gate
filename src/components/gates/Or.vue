@@ -17,15 +17,13 @@ export default {
 
 <template functional lang="pug">
 g(transform="translate(-25)")
+  path(d=`M 0 -5 L 10 -5` :class="{ on: props.inputs && props.inputs.a }")
+  path(d=`M 0 5 L 10 5` :class="{ on: props.inputs && props.inputs.b }")
   path(d=`
-    M 0 -5 L 10 -5
-    M 0 5 L 10 5
-
     M 7 -10
     C 12 -10 12 10 7 10
-    C 40 10 40 -10 7 -10
-
-    M 32 0 L 50 0`)
+    C 40 10 40 -10 7 -10`)
+  path(d=`M 32 0 L 50 0` :class="{ on: props.outputs && props.outputs.q }")
 
   text(v-if="props.index != undefined" x="40" y="15" font-size="8") {{ props.index }}
 </template>
