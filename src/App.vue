@@ -1,15 +1,12 @@
 <script>
-import Header from './components/header'
 import Board from './Board.vue'
 
 export default {
   name: 'App',
   components: {
-    Header,
     Board
   },
   data: () => ({
-    mode: 'move',
     zoom: 1.2,
     boards: [
       {
@@ -207,21 +204,14 @@ export default {
         ]
       }
     ]
-  }),
-  methods: {
-    setMode(mode) {
-      this.mode = mode
-    }
-  }
+  })
 }
 </script>
 
 <template lang="pug">
 div
-  Header(:mode="mode" @mode="setMode")
   svg.main(width="600" height="1200" :viewBox="`0, 0, ${600/zoom}, ${1200/zoom}`")
     Board(
-      :mode="mode"
       :zoom="zoom"
       :components="boards[3].components"
       :connections="boards[3].connections"

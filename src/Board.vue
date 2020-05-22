@@ -90,10 +90,6 @@ export default {
       type: Array,
       required: true
     },
-    mode: {
-      type: String,
-      required: true
-    },
     zoom: {
       type: Number,
       default: 1
@@ -272,9 +268,8 @@ export default {
         })
       } else console.log('no target found')
 
-      // TODO: Delete mode
-      // TODO: Delete connection circle
-      // TODO: Highlight connection on delete circle hover
+      // TODO: Delete component
+      // TODO: Delete connection (Highlight connection on delete circle hover)
 
       this.connectionSource = undefined
     }
@@ -294,7 +289,7 @@ g
     v-for="(component, index) in components2" :key="index"
     :x="component.x" :y="component.y" :r="10"
     :zoom="zoom"
-    :disabled="mode == 'select' || !!connectionSource"
+    :disabled="!!connectionSource"
     @drag="drag(index, $event)"
   )
     g
