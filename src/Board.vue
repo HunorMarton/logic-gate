@@ -2,6 +2,7 @@
 import Sidebar from './components/Sidebar.vue'
 
 import Static from './components/gates/Static.vue'
+import Result from './components/gates/Result.vue'
 import Not from './components/gates/Not.vue'
 import And from './components/gates/And.vue'
 import Nand from './components/gates/Nand.vue'
@@ -16,6 +17,8 @@ const resolveAdditionalData = type => {
   switch (type) {
     case 'static':
       return Static.extraData
+    case 'result':
+      return Result.extraData
     case 'not':
       return Not.extraData
     case 'and':
@@ -70,6 +73,8 @@ export default {
     Sidebar,
 
     Static,
+    Result,
+
     Not,
     And,
     Nand,
@@ -270,7 +275,6 @@ export default {
 
       // TODO: Delete component
       // TODO: Delete connection (Highlight connection on delete circle hover)
-      // TODO: Static output component
       // TODO: Display static component' state
 
       this.connectionSource = undefined

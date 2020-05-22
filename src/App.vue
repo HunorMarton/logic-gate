@@ -7,6 +7,8 @@ export default {
     Board
   },
   data: () => ({
+    width: 1000,
+    height: 1000,
     zoom: 1.2,
     boards: [
       {
@@ -189,6 +191,16 @@ export default {
             type: 'nand',
             x: 390,
             y: 140
+          },
+          {
+            type: 'result',
+            x: 470,
+            y: 10
+          },
+          {
+            type: 'result',
+            x: 500,
+            y: 140
           }
         ],
         connections: [
@@ -200,7 +212,9 @@ export default {
           { output: { c: 2, o: 'q' }, input: { c: 5, i: 'a' } },
           { output: { c: 1, o: 'q' }, input: { c: 5, i: 'b' } },
           { output: { c: 4, o: 'q' }, input: { c: 6, i: 'a' } },
-          { output: { c: 5, o: 'q' }, input: { c: 6, i: 'b' } }
+          { output: { c: 5, o: 'q' }, input: { c: 6, i: 'b' } },
+          { output: { c: 4, o: 'q' }, input: { c: 7, i: 'a' } },
+          { output: { c: 6, o: 'q' }, input: { c: 8, i: 'a' } }
         ]
       }
     ]
@@ -210,7 +224,7 @@ export default {
 
 <template lang="pug">
 div
-  svg.main(width="600" height="1200" :viewBox="`0, 0, ${600/zoom}, ${1200/zoom}`")
+  svg.main(:width="width" :height="height" :viewBox="`0, 0, ${width/zoom}, ${height/zoom}`")
     Board(
       :zoom="zoom"
       :components="boards[3].components"

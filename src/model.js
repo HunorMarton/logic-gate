@@ -68,6 +68,13 @@ Static.prototype.calculate = function() {
   return { q: this.value }
 }
 
+export function Result() {
+  Component.call(this)
+}
+Result.prototype = Object.create(Component.prototype)
+Result.prototype.requiredInputs = ['a']
+Result.prototype.calculate = () => ({})
+
 export function Not() {
   Component.call(this)
 }
