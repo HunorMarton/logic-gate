@@ -218,7 +218,7 @@ export default {
 <template lang="pug">
 div
   Header(:mode="mode" @mode="setMode")
-  svg.main(width="600" height="1200")
+  svg.main(width="600" height="1200" viewBox="0, 0, 500, 1000")
     Board(
       :mode="mode"
       :components="boards[2].components"
