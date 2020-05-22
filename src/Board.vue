@@ -259,7 +259,7 @@ export default {
         )
 
         inputComponent.inputs[input.ioKey].used = true
-        inputComponent.outputs[output.ioKey].used = true
+        outputComponent.outputs[output.ioKey].used = true
 
         this.connections2.push({
           output: {
