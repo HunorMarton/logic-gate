@@ -1,5 +1,7 @@
 <script>
 import Static from './gates/Static.vue'
+import Result from './gates/Result.vue'
+
 import Not from './gates/Not.vue'
 import And from './gates/And.vue'
 import Nand from './gates/Nand.vue'
@@ -12,6 +14,8 @@ import Draggable from './Draggable'
 export default {
   components: {
     Static,
+    Result,
+
     Not,
     And,
     Nand,
@@ -34,12 +38,13 @@ export default {
     },
     gates: [
       { type: 'static', offset: 0 },
-      { type: 'not', offset: 50 },
-      { type: 'and', offset: 100 },
-      { type: 'nand', offset: 150 },
-      { type: 'or', offset: 200 },
-      { type: 'nor', offset: 250 },
-      { type: 'xor', offset: 300 }
+      { type: 'result', offset: 50 },
+      { type: 'not', offset: 100 },
+      { type: 'and', offset: 150 },
+      { type: 'nand', offset: 200 },
+      { type: 'or', offset: 250 },
+      { type: 'nor', offset: 300 },
+      { type: 'xor', offset: 350 }
     ]
   }),
   methods: {
