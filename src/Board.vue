@@ -270,6 +270,8 @@ export default {
 
       // TODO: Delete component
       // TODO: Delete connection (Highlight connection on delete circle hover)
+      // TODO: Static output component
+      // TODO: Display static component' state
 
       this.connectionSource = undefined
     }

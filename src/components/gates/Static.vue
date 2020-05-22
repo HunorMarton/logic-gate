@@ -43,7 +43,7 @@ g(
     L 20 -10
     L 0 -10`)
   path(d=`M 20 0 L 50 0` :class="{ on: outputs && outputs.q }")
-  text(v-if="index != undefined" x="40" y="15" font-size="8") {{ index }}
+  text(v-if="index != undefined" x="25" y="25" font-size="8") {{ index }}
 </template>
 
 <style lang="scss" scoped>
