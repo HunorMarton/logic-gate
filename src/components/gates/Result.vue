@@ -18,7 +18,7 @@ g(transform="translate(-25)")
     x="40" y="-7" width="14" height="14"
     :class="{ fillOn: props.inputs && props.inputs.a }"
   )
-  text(v-if="props.index != undefined" x="25" y="25" font-size="8") {{ props.index }}
+  text(v-if="props.index != undefined" x="25" y="25" font-size="8" text-anchor="middle") {{ props.index }}
 </template>
 
 <style lang="scss" scoped>

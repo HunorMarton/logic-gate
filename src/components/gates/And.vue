@@ -24,5 +24,5 @@ g(transform="translate(-25)")
     C 40 10 40 -10 10 -10`)
   path(d=`M 32 0 L 50 0` :class="{ on: props.outputs && props.outputs.q }")
 
-  text(v-if="props.index != undefined" x="25" y="25" font-size="8") {{ props.index }}
+  text(v-if="props.index != undefined" x="25" y="25" font-size="8" text-anchor="middle") {{ props.index }}
 </template>
