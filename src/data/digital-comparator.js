@@ -1,22 +1,22 @@
 export default {
   components: [
     // 0
-    { type: 'static', label: 'A', x: 100, y: 10 },
-    { type: 'static', label: 'B', x: 110, y: 170 },
+    { type: 'static', label: 'A', x: 200, y: 110 },
+    { type: 'static', label: 'B', x: 210, y: 270 },
 
     // 2
-    { type: 'not', x: 180, y: 10 },
-    { type: 'not', x: 180, y: 170 },
+    { type: 'not', x: 280, y: 110 },
+    { type: 'not', x: 280, y: 270 },
 
     // 4
-    { type: 'and', x: 240, y: 40 },
-    { type: 'and', x: 240, y: 140 },
-    { type: 'nor', x: 300, y: 90 },
+    { type: 'and', x: 340, y: 140 },
+    { type: 'and', x: 340, y: 240 },
+    { type: 'nor', x: 400, y: 190 },
 
     // 7
-    { type: 'result', label: 'A < B', x: 400, y: 40 },
-    { type: 'result', label: 'A = B', x: 400, y: 90 },
-    { type: 'result', label: 'A > B', x: 400, y: 140 }
+    { type: 'result', label: 'A < B', x: 470, y: 140 },
+    { type: 'result', label: 'A = B', x: 470, y: 190 },
+    { type: 'result', label: 'A > B', x: 470, y: 240 }
   ],
   connections: [
     { output: { c: 0, o: 'q' }, input: { c: 2, i: 'a' } },

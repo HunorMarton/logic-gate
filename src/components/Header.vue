@@ -9,7 +9,7 @@ import multiplexer from '../data/multiplexer'
 
 export default {
   data: () => ({
-    selected: 4,
+    selected: 0,
     menu: [
       { title: 'Binary adder', data: binaryAdder },
       { title: 'Binary decoder', data: binaryDecoder },

@@ -1,56 +1,16 @@
 export default {
   components: [
-    {
-      type: 'static',
-      label: 'D',
-      x: 100,
-      y: 0,
-      props: false
-    },
-    {
-      type: 'static',
-      label: 'Enable',
-      x: 220,
-      y: 75,
-      props: true
-    },
-    {
-      type: 'not',
-      x: 170,
-      y: 150
-    },
-    {
-      type: 'nand',
-      x: 290,
-      y: 5
-    },
-    {
-      type: 'nand',
-      x: 380,
-      y: 10
-    },
-    {
-      type: 'nand',
-      x: 290,
-      y: 145
-    },
-    {
-      type: 'nand',
-      x: 390,
-      y: 140
-    },
-    {
-      type: 'result',
-      label: 'Q',
-      x: 470,
-      y: 10
-    },
-    {
-      type: 'result',
-      label: '!Q',
-      x: 500,
-      y: 140
-    }
+    { type: 'static', label: 'D', x: 200, y: 100, props: false },
+    { type: 'static', label: 'Enable', x: 320, y: 175, props: true },
+
+    { type: 'not', x: 270, y: 250 },
+    { type: 'nand', x: 390, y: 105 },
+    { type: 'nand', x: 480, y: 110 },
+    { type: 'nand', x: 390, y: 245 },
+    { type: 'nand', x: 490, y: 240 },
+
+    { type: 'result', label: 'Q', x: 570, y: 110 },
+    { type: 'result', label: '!Q', x: 600, y: 240 }
   ],
   connections: [
     { output: { c: 0, o: 'q' }, input: { c: 2, i: 'a' } },

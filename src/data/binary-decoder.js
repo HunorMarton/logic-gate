@@ -1,71 +1,19 @@
 export default {
   components: [
-    {
-      type: 'static',
-      label: 'A',
-      x: 110,
-      y: 5
-    },
-    {
-      type: 'static',
-      label: 'B',
-      x: 100,
-      y: 105
-    },
-    {
-      type: 'not',
-      x: 180,
-      y: 5
-    },
-    {
-      type: 'not',
-      x: 170,
-      y: 105
-    },
-    {
-      type: 'and',
-      x: 300,
-      y: 100
-    },
-    {
-      type: 'and',
-      x: 300,
-      y: 150
-    },
-    {
-      type: 'and',
-      x: 300,
-      y: 200
-    },
-    {
-      type: 'and',
-      x: 300,
-      y: 250
-    },
-    {
-      type: 'result',
-      label: '0',
-      x: 370,
-      y: 100
-    },
-    {
-      type: 'result',
-      label: '1',
-      x: 370,
-      y: 150
-    },
-    {
-      type: 'result',
-      label: '2',
-      x: 370,
-      y: 200
-    },
-    {
-      type: 'result',
-      label: '3',
-      x: 370,
-      y: 250
-    }
+    { type: 'static', label: 'A', x: 210, y: 105 },
+    { type: 'static', label: 'B', x: 200, y: 205 },
+    { type: 'not', x: 280, y: 105 },
+    { type: 'not', x: 270, y: 205 },
+
+    { type: 'and', x: 400, y: 200 },
+    { type: 'and', x: 400, y: 250 },
+    { type: 'and', x: 400, y: 300 },
+    { type: 'and', x: 400, y: 350 },
+
+    { type: 'result', label: '0', x: 470, y: 200 },
+    { type: 'result', label: '1', x: 470, y: 250 },
+    { type: 'result', label: '2', x: 470, y: 300 },
+    { type: 'result', label: '3', x: 470, y: 350 }
   ],
   connections: [
     { output: { c: 0, o: 'q' }, input: { c: 2, i: 'a' } },
