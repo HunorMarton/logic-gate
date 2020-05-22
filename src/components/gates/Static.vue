@@ -36,12 +36,15 @@ g(
   transform="translate(-25)"
   @click="toggle"
 )
-  path(d=`
-    M 0 -10
-    L 0 10
-    L 20 10
-    L 20 -10
-    L 0 -10`)
+  path(
+    d=`
+      M 0 -10
+      L 0 10
+      L 20 10
+      L 20 -10
+      L 0 -10`
+    :class="{ fillOn: outputs && outputs.q }"
+  )
   path(d=`M 20 0 L 50 0` :class="{ on: outputs && outputs.q }")
   text(v-if="index != undefined" x="25" y="25" font-size="8") {{ index }}
 </template>
@@ -50,5 +53,10 @@ g(
 path {
   cursor: pointer;
   fill: #fff;
+}
+
+.fillOn {
+  stroke: #71b48d;
+  fill: #86cb92;
 }
 </style>
