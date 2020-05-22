@@ -87,12 +87,8 @@ export default {
     Draggable
   },
   props: {
-    components: {
-      type: Array,
-      required: true
-    },
-    connections: {
-      type: Array,
+    board: {
+      type: Object,
       required: true
     },
     zoom: {
@@ -102,8 +98,8 @@ export default {
   },
   data() {
     return {
-      components2: extendComponents(this.components, this.connections),
-      connections2: this.connections,
+      components2: undefined,
+      connections2: undefined,
       connectionSource: undefined,
       addedGateIndex: undefined,
       addedGateOffsetX: undefined,
@@ -111,14 +107,12 @@ export default {
     }
   },
   created() {
-    this.connections.forEach(connection => {
-      // Connect models
-      this.components2[connection.input.c].model.connect(
-        connection.input.i,
-        this.components2[connection.output.c].model,
-        connection.output.o
-      )
-    })
+    this.initBoard()
+  },
+  watch: {
+    board() {
+      this.initBoard()
+    }
   },
   computed: {
     connectionTarget() {
@@ -172,6 +166,22 @@ export default {
     }
   },
   methods: {
+    initBoard() {
+      this.components2 = extendComponents(
+        this.board.components,
+        this.board.connections
+      )
+      this.connections2 = this.board.connections
+
+      this.board.connections.forEach(connection => {
+        // Connect models
+        this.components2[connection.input.c].model.connect(
+          connection.input.i,
+          this.components2[connection.output.c].model,
+          connection.output.o
+        )
+      })
+    },
     addGate(type, x, y) {
       const index = this.components2.length
       const component = extendComponent({ type, x, y }, index)
@@ -275,6 +285,12 @@ export default {
 
       // TODO: Delete component
       // TODO: Delete connection (Highlight connection on delete circle hover)
+      // TODO: Make svg fill the screen
+      // TODO: Make sidebar nicer
+      // TODO: Add header with board selector, footer with about
+      // TODO: Add labels to inputs and outputs
+      // TODO: Add label popup when gateAdded
+      // TODO: Hide id behind a debug flag (or just make it gray)
 
       this.connectionSource = undefined
     }

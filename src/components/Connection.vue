@@ -27,7 +27,6 @@ export default {
       if (this.x2 > this.x1) {
         return `
           M ${this.x1} ${this.y1}
-          l ${(this.x2 - this.x1) / 2} 0
           l 0 ${this.y2 - this.y1}
           L ${this.x2} ${this.y2}`
       }
