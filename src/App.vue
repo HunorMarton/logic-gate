@@ -1,18 +1,21 @@
 <script>
 import Header from './components/Header.vue'
 import Board from './Board.vue'
+import About from './components/About.vue'
 
 export default {
   name: 'App',
   components: {
     Header,
-    Board
+    Board,
+    About
   },
   data: () => ({
     width: 1000,
     height: 1000,
     zoom: 1.2,
-    board: undefined
+    board: undefined,
+    about: false
   }),
   mounted() {
     this.width = this.$refs.main.clientWidth
@@ -21,6 +24,10 @@ export default {
   methods: {
     select(board) {
       this.board = board
+      this.about = false
+    },
+    goToAboutPage() {
+      this.about = true
     }
   }
 }
@@ -28,8 +35,9 @@ export default {
 
 <template lang="pug">
 div.page
-  Header(@select="select")
-  svg.main(ref="main" width="100%" height="100%" :viewBox="`0, 0, ${width/zoom}, ${height/zoom}`")
+  Header(@select="select" @about="goToAboutPage")
+  About(v-if="about")
+  svg.main(v-else ref="main" width="100%" height="100%" :viewBox="`0, 0, ${width/zoom}, ${height/zoom}`")
     Board(
       v-if="board"
       :zoom="zoom"
@@ -52,7 +60,7 @@ body {
 
 .page {
   display: grid;
-  grid-template-rows: auto 1fr;
+  grid-template-rows: auto 1fr auto;
   height: 100%;
 }
 

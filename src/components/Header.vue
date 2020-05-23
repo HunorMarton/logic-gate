@@ -15,8 +15,7 @@ export default {
       { title: 'Binary decoder', data: binaryDecoder },
       { title: 'Digital comparator', data: digitalComparator },
       { title: 'D flip-flop', data: dFlipFlop },
-      { title: 'Multiplexer', data: multiplexer },
-      { title: 'Blank', data: { components: [], connections: [] } }
+      { title: 'Multiplexer', data: multiplexer }
     ]
   }),
   created() {
@@ -25,6 +24,9 @@ export default {
   methods: {
     select(data) {
       this.$emit('select', data)
+    },
+    about() {
+      this.$emit('about')
     }
   }
 }
@@ -37,21 +39,27 @@ export default {
       :class="{ active: index == selected}"
       @click="select(item.data)"
     ) {{ item.title }}
+    span |
+    a.about(@click="about") About
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 header {
   color: lightgray;
   background-color: #260f26;
+}
+
+header * {
+  margin: 20px;
 }
 
 a {
   cursor: pointer;
   display: inline-block;
   font-size: 0.9em;
-  margin: 20px;
 }
-a.active {
+
+.active {
   color: white;
 }
 </style>
