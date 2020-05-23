@@ -32,18 +32,26 @@ export default {
 
 <template lang="pug">
   header
-    a(v-for="item in menu" :key="item.title" @click="select(item.data)") {{ item.title }}
+    a(
+      v-for="(item, index) in menu" :key="item.title"
+      :class="{ active: index == selected}"
+      @click="select(item.data)"
+    ) {{ item.title }}
 </template>
 
 <style lang="scss">
 header {
-  background-color: lightgray;
+  color: lightgray;
+  background-color: #260f26;
 }
 
 a {
   cursor: pointer;
   display: inline-block;
-  font-size: 0.8em;
-  margin: 15px;
+  font-size: 0.9em;
+  margin: 20px;
+}
+a.active {
+  color: white;
 }
 </style>

@@ -289,7 +289,6 @@ export default {
       } else console.log('no target found')
 
       // TODO: Delete component
-      // TODO: Make sidebar nicer
       // TODO: Do not add item if it doesn't leaves the sidebar
 
       this.connectionSource = undefined

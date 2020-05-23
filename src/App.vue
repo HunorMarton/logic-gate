@@ -34,18 +34,17 @@ div.page
       v-if="board"
       :zoom="zoom"
       :board="board"
-      transform="translate(50, 50)"
     )
 </template>
 
 <style lang="scss">
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 html {
   height: 100%;
 }
 
 body {
-  font-family: 'Roboto Mono', monospace;
+  font-family: 'Roboto', sans-serif;
   padding: 0;
   margin: 0;
   height: 100%;

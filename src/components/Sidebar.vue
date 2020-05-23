@@ -33,8 +33,8 @@ export default {
   },
   data: () => ({
     baseOffset: {
-      x: 0,
-      y: 0
+      x: 40,
+      y: 40
     },
     gates: [
       { type: 'static', offset: 0 },
@@ -63,7 +63,7 @@ export default {
 
 <template lang="pug">
   g.sidebar(:transform="`translate(${baseOffset.x}, ${baseOffset.y})`")
-    rect(x="-40" y="-40" width="80" :height="50*gates.length + 30")
+    rect(x="-40" y="-40" width="80" height="100%")
     Draggable(
       v-for="gate in gates"
       :x="0" :y="gate.offset" :r="20"
@@ -73,11 +73,16 @@ export default {
       @dragend="dragend"
     )
       component(:is="gate.type")
+    g(v-if="false" :transform="`translate(0, ${50*gates.length + 30})`")
+      rect(x="-10" y="0" width="20" height="10" rx="2" fill="white")
+      rect(x="-20" y="15" width="40" height="40" rx="5" fill="white")
+      rect(x="-25" y="10" width="50" height="10" rx="2" fill="white")
+
 </template>
 
 <style lang="scss" scoped>
 .sidebar rect {
-  stroke: #ccc;
-  stroke-width: 1;
+  fill: #404e7c;
+  opacity: 0.05;
 }
 </style>
