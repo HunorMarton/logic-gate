@@ -335,7 +335,7 @@ g
         :outputs="component.model.outputs"
       )
       Draggable(
-        v-for="(output, outputKey) in component.outputs" :key="`draggable-${outputKey}`"
+        v-for="(output, outputKey) in component.outputs" :key="outputKey"
         v-if="!connectionSource || !connectionSource.outbound || (connectionSource.index == index && connectionSource.ioKey == outputKey)"
         :x="output.x" :y="output.y" :r="5"
         :zoom="zoom"
@@ -356,7 +356,7 @@ g
           @dragend="endConnection()"
         )
         circle.remove-input(
-          v-else
+          v-else-if="!connectionSource"
           :cx="input.x" :cy="input.y" :r="5"
           @click="removeInput(index, inputKey)"
         )
