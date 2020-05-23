@@ -292,7 +292,6 @@ export default {
       // TODO: Delete component
       // TODO: Delete connection (Highlight connection on delete circle hover)
       // TODO: Make sidebar nicer
-      // TODO: add blank page
       // TODO: Do not add item if it doesn't leaves the sidebar
 
       this.connectionSource = undefined

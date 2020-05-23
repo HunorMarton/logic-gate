@@ -15,7 +15,8 @@ export default {
       { title: 'Binary decoder', data: binaryDecoder },
       { title: 'Digital comparator', data: digitalComparator },
       { title: 'D flip-flop', data: dFlipFlop },
-      { title: 'Multiplexer', data: multiplexer }
+      { title: 'Multiplexer', data: multiplexer },
+      { title: 'Blank', data: { components: [], connections: [] } }
     ]
   }),
   created() {
