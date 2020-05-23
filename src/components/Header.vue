@@ -22,10 +22,12 @@ export default {
     this.$emit('select', this.menu[this.selected].data)
   },
   methods: {
-    select(data) {
+    select(index, data) {
+      this.selected = index
       this.$emit('select', data)
     },
     about() {
+      this.selected = 'about'
       this.$emit('about')
     }
   }
@@ -36,11 +38,11 @@ export default {
   header
     a(
       v-for="(item, index) in menu" :key="item.title"
-      :class="{ active: index == selected}"
-      @click="select(item.data)"
+      :class="{ active: index == selected }"
+      @click="select(index, item.data)"
     ) {{ item.title }}
     span |
-    a.about(@click="about") About
+    a.about(@click="about" :class="{ active: selected == 'about' }") About
 </template>
 
 <style lang="scss" scoped>
