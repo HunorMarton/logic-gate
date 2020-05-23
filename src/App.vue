@@ -46,6 +46,8 @@ div.page
 </template>
 
 <style lang="scss">
+// Color palette: https://coolors.co/86cb92-71b48d-404e7c-251f47-260f26
+
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 html {
   height: 100%;
