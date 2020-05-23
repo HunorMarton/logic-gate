@@ -54,6 +54,7 @@ circle {
   fill: #404e7c;
   stroke: none;
   opacity: 0.1;
+  cursor: pointer;
 }
 
 rect {
