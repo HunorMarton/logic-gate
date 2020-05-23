@@ -35,6 +35,10 @@ export default {
 </template>
 
 <style lang="scss">
+header {
+  background-color: lightgray;
+}
+
 a {
   cursor: pointer;
   display: inline-block;

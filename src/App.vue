@@ -14,6 +14,10 @@ export default {
     zoom: 1.2,
     board: undefined
   }),
+  mounted() {
+    this.width = this.$refs.main.clientWidth
+    this.height = this.$refs.main.clientHeight
+  },
   methods: {
     select(board) {
       this.board = board
@@ -23,9 +27,9 @@ export default {
 </script>
 
 <template lang="pug">
-div
+div.page
   Header(@select="select")
-  svg.main(:width="width" :height="height" :viewBox="`0, 0, ${width/zoom}, ${height/zoom}`")
+  svg.main(ref="main" width="100%" height="100%" :viewBox="`0, 0, ${width/zoom}, ${height/zoom}`")
     Board(
       v-if="board"
       :zoom="zoom"
@@ -36,15 +40,24 @@ div
 
 <style lang="scss">
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500&display=swap');
+html {
+  height: 100%;
+}
 
 body {
   font-family: 'Roboto Mono', monospace;
   padding: 0;
   margin: 0;
+  height: 100%;
+}
+
+.page {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  height: 100%;
 }
 
 .main {
-  border: 1px solid #ccc;
   fill: none;
   stroke: #404e7c;
   stroke-width: 1px;
