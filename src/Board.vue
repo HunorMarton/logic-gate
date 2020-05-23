@@ -54,13 +54,10 @@ const extendComponent = (component, index) => {
 const extendComponents = (components, connections) => {
   const extendedComponents = components.map(extendComponent)
 
-  // Mark inputs/outputs that are used
+  // Mark inputs that are used
   connections.forEach(connection => {
     extendedComponents[connection.input.c].inputs[
       connection.input.i
-    ].used = true
-    extendedComponents[connection.output.c].outputs[
-      connection.output.o
     ].used = true
   })
 
@@ -268,15 +265,17 @@ export default {
         const inputComponent = this.components[input.index]
         const outputComponent = this.components[output.index]
 
+        // Connect models
         inputComponent.model.connect(
           input.ioKey,
           outputComponent.model,
           output.ioKey
         )
 
+        // Mark connection as used
         inputComponent.inputs[input.ioKey].used = true
-        outputComponent.outputs[output.ioKey].used = true
 
+        // Add connection's visual representation
         this.connections.push({
           output: {
             c: output.index,
@@ -290,11 +289,28 @@ export default {
       } else console.log('no target found')
 
       // TODO: Delete component
-      // TODO: Delete connection (Highlight connection on delete circle hover)
       // TODO: Make sidebar nicer
       // TODO: Do not add item if it doesn't leaves the sidebar
 
       this.connectionSource = undefined
+    },
+    removeInput(index, inputKey) {
+      const connectionIndex = this.connections.findIndex(
+        connection =>
+          connection.input.c == index && connection.input.i == inputKey
+      )
+      const connection = this.connections[connectionIndex]
+      const inputComponent = this.components[connection.input.c]
+      const outputComponent = this.components[connection.output.c]
+
+      // Disconnect models
+      inputComponent.model.disconnect(connection.input.i, outputComponent.model)
+
+      // Remove connection representation
+      this.connections.splice(connectionIndex, 1)
+
+      // Mark input as not used
+      inputComponent.inputs[connection.input.i].used = false
     }
   }
 }
@@ -334,16 +350,22 @@ g
         @drag="drawConnection($event)"
         @dragend="endConnection()"
       )
-      Draggable(
-        v-for="(input, inputKey) in component.inputs" :key="inputKey"
-        v-if="!input.used && (!connectionSource || connectionSource.outbound || (connectionSource.index == index && connectionSource.ioKey == inputKey))"
-        :x="input.x" :y="input.y" :r="5"
-        :zoom="zoom"
-        :color="connectionTarget && connectionTarget.index == index && connectionTarget.ioKey == inputKey ? 'green' : 'gray'"
-        @dragstart="startConnection(index, inputKey, false)"
-        @drag="drawConnection($event)"
-        @dragend="endConnection()"
-      )
+      template(v-for="(input, inputKey) in component.inputs")
+        Draggable(
+          :key="inputKey"
+          v-if="!input.used && (!connectionSource || connectionSource.outbound || (connectionSource.index == index && connectionSource.ioKey == inputKey))"
+          :x="input.x" :y="input.y" :r="5"
+          :zoom="zoom"
+          :color="connectionTarget && connectionTarget.index == index && connectionTarget.ioKey == inputKey ? 'green' : 'gray'"
+          @dragstart="startConnection(index, inputKey, false)"
+          @drag="drawConnection($event)"
+          @dragend="endConnection()"
+        )
+        circle.remove-input(
+          v-else
+          :cx="input.x" :cy="input.y" :r="5"
+          @click="removeInput(index, inputKey)"
+        )
   Connection(
     v-for="connection in connections" :key="`${connection.output.c}-${connection.output.o}-${connection.input.c}-${connection.input.i}`"
     :x1="components[connection.output.c].x + components[connection.output.c].outputs[connection.output.o].x"
@@ -365,5 +387,19 @@ g
 .on {
   stroke: #71b48d;
   stroke-width: 1.5px;
+}
+</style>
+
+<style lang="scss" scoped>
+.remove-input {
+  fill: #404e7c;
+  stroke: none;
+  opacity: 0.1;
+  cursor: pointer;
+}
+
+.remove-input:hover {
+  opacity: 0.3;
+  fill: red;
 }
 </style>

@@ -41,13 +41,25 @@ Component.prototype.trigger = function() {
 Component.prototype.calculate = () => {
   throw Error('Component is abstract')
 }
-Component.prototype.connect = function(input, component, output) {
-  component.dependencies.add(this)
-  // console.log(`${this.id} depends on ${component.id}`)
+Component.prototype.connect = function(
+  input,
+  sourceComponent,
+  sourceComponentOutput
+) {
+  sourceComponent.dependencies.add(this)
+  // console.log(`${this.id} depends on ${sourceComponent.id}`)
   this.inputs[input] = {
-    c: component,
-    o: output
+    c: sourceComponent,
+    o: sourceComponentOutput
   }
+  this.trigger()
+}
+
+Component.prototype.disconnect = function(input, sourceComponent) {
+  sourceComponent.dependencies.delete(this)
+
+  delete this.inputs[input]
+
   this.trigger()
 }
 
