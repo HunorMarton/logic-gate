@@ -1,4 +1,4 @@
-# circuit
+# Logic gate
 
 ## Project setup
 ```
