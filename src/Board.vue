@@ -205,6 +205,12 @@ export default {
         // TODO: Remove item
       }
 
+      const component = this.components[this.addedGateIndex]
+      if (['static', 'result'].includes(component.type)) {
+        const label = prompt('Label (optional):')
+        component.label = label
+      }
+
       this.addedGateIndex = undefined
       this.addedGateOffsetX = undefined
       this.addedGateOffsetY = undefined
@@ -287,7 +293,6 @@ export default {
       // TODO: Delete connection (Highlight connection on delete circle hover)
       // TODO: Make svg fill the screen, footer with about
       // TODO: Make sidebar nicer
-      // TODO: Add label popup when gateAdded
       // TODO: Hide id behind a debug flag (or just make it gray)
       // TODO: add blank page
       // TODO: Do not add item if it doesn't leaves the sidebar
@@ -322,22 +327,16 @@ g
         :inputs="Object.fromEntries(Object.entries(component.model.inputs).map(([inputKey, { c, o }]) => [inputKey, c.outputs[o]]))"
         :outputs="component.model.outputs"
       )
-      template(v-for="(output, outputKey) in component.outputs")
-        text(
-          v-if="false"
-          :key="`text-${outputKey}`"
-          :x="output.x" :y="output.y - 5" text-anchor="end"
-        ) {{ component.model.outputs[outputKey] == undefined ? 'x' : Number(component.model.outputs[outputKey]) }}
-        Draggable(
-          :key="`draggable-${outputKey}`"
-          v-if="!connectionSource || !connectionSource.outbound || (connectionSource.index == index && connectionSource.ioKey == outputKey)"
-          :x="output.x" :y="output.y" :r="5"
-          :zoom="zoom"
-          :color="connectionTarget && connectionTarget.index == index && connectionTarget.ioKey == outputKey ? 'green' : 'gray'"
-          @dragstart="startConnection(index, outputKey, true)"
-          @drag="drawConnection($event)"
-          @dragend="endConnection()"
-        )
+      Draggable(
+        v-for="(output, outputKey) in component.outputs" :key="`draggable-${outputKey}`"
+        v-if="!connectionSource || !connectionSource.outbound || (connectionSource.index == index && connectionSource.ioKey == outputKey)"
+        :x="output.x" :y="output.y" :r="5"
+        :zoom="zoom"
+        :color="connectionTarget && connectionTarget.index == index && connectionTarget.ioKey == outputKey ? 'green' : 'gray'"
+        @dragstart="startConnection(index, outputKey, true)"
+        @drag="drawConnection($event)"
+        @dragend="endConnection()"
+      )
       Draggable(
         v-for="(input, inputKey) in component.inputs" :key="inputKey"
         v-if="!input.used && (!connectionSource || connectionSource.outbound || (connectionSource.index == index && connectionSource.ioKey == inputKey))"
