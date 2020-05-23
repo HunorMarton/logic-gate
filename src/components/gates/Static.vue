@@ -47,7 +47,6 @@ g(
     :class="{ fillOn: outputs && outputs.q }"
   )
   path(d=`M 10 0 L 50 0` :class="{ on: outputs && outputs.q }")
-  text(v-if="index != undefined" x="25" y="25" font-size="8" text-anchor="middle") {{ index }}
 </template>
 
 <style lang="scss" scoped>

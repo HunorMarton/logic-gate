@@ -292,7 +292,6 @@ export default {
       // TODO: Delete component
       // TODO: Delete connection (Highlight connection on delete circle hover)
       // TODO: Make sidebar nicer
-      // TODO: Hide id behind a debug flag (or just make it gray)
       // TODO: add blank page
       // TODO: Do not add item if it doesn't leaves the sidebar
 
