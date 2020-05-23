@@ -98,8 +98,8 @@ export default {
   },
   data() {
     return {
-      components2: undefined,
-      connections2: undefined,
+      components: undefined,
+      connections: undefined,
       connectionSource: undefined,
       addedGateIndex: undefined,
       addedGateOffsetX: undefined,
@@ -125,7 +125,7 @@ export default {
       const distance = ({ x: x1, y: y1 }, { x: x2, y: y2 }) =>
         Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2))
 
-      const componentInputs = this.components2
+      const componentInputs = this.components
         // Filter out the ones that have no input/output
         .filter(component =>
           targetIsAnInput ? component.inputs : component.outputs
@@ -167,31 +167,31 @@ export default {
   },
   methods: {
     initBoard() {
-      this.components2 = extendComponents(
+      this.components = extendComponents(
         this.board.components,
         this.board.connections
       )
-      this.connections2 = this.board.connections
+      this.connections = this.board.connections
 
       this.board.connections.forEach(connection => {
         // Connect models
-        this.components2[connection.input.c].model.connect(
+        this.components[connection.input.c].model.connect(
           connection.input.i,
-          this.components2[connection.output.c].model,
+          this.components[connection.output.c].model,
           connection.output.o
         )
       })
     },
     addGate(type, x, y) {
-      const index = this.components2.length
+      const index = this.components.length
       const component = extendComponent({ type, x, y }, index)
-      this.components2.push(component)
+      this.components.push(component)
       this.addedGateIndex = index
       this.addedGateOffsetX = 0
       this.addedGateOffsetY = 0
     },
     dragAddedGate({ dx, dy }) {
-      const component = this.components2[this.addedGateIndex]
+      const component = this.components[this.addedGateIndex]
       component.x += dx
       component.y += dy
       this.addedGateOffsetX += dx
@@ -210,12 +210,12 @@ export default {
       this.addedGateOffsetY = undefined
     },
     drag(index, { dx, dy }) {
-      const component = this.components2[index]
+      const component = this.components[index]
       component.x += dx
       component.y += dy
     },
     startConnection(index, ioKey, outbound) {
-      const component = this.components2[index]
+      const component = this.components[index]
       const offset = outbound
         ? component.outputs[ioKey]
         : component.inputs[ioKey]
@@ -259,8 +259,8 @@ export default {
           ? this.connectionTarget
           : this.connectionSource
 
-        const inputComponent = this.components2[input.index]
-        const outputComponent = this.components2[output.index]
+        const inputComponent = this.components[input.index]
+        const outputComponent = this.components[output.index]
 
         inputComponent.model.connect(
           input.ioKey,
@@ -271,7 +271,7 @@ export default {
         inputComponent.inputs[input.ioKey].used = true
         outputComponent.outputs[output.ioKey].used = true
 
-        this.connections2.push({
+        this.connections.push({
           output: {
             c: output.index,
             o: output.ioKey
@@ -289,6 +289,8 @@ export default {
       // TODO: Make sidebar nicer
       // TODO: Add label popup when gateAdded
       // TODO: Hide id behind a debug flag (or just make it gray)
+      // TODO: add blank page
+      // TODO: Do not add item if it doesn't leaves the sidebar
 
       this.connectionSource = undefined
     }
@@ -305,7 +307,7 @@ g
     @gateAdded="gateAdded"
   )
   Draggable(
-    v-for="(component, index) in components2" :key="index"
+    v-for="(component, index) in components" :key="index"
     :x="component.x" :y="component.y" :r="10"
     :zoom="zoom"
     :disabled="!!connectionSource"
@@ -347,12 +349,12 @@ g
         @dragend="endConnection()"
       )
   Connection(
-    v-for="connection in connections2" :key="`${connection.output.c}-${connection.output.o}-${connection.input.c}-${connection.input.i}`"
-    :x1="components2[connection.output.c].x + components2[connection.output.c].outputs[connection.output.o].x"
-    :y1="components2[connection.output.c].y + components2[connection.output.c].outputs[connection.output.o].y"
-    :x2="components2[connection.input.c].x + components2[connection.input.c].inputs[connection.input.i].x"
-    :y2="components2[connection.input.c].y + components2[connection.input.c].inputs[connection.input.i].y"
-    :on="components2[connection.output.c].model.outputs[connection.output.o]"
+    v-for="connection in connections" :key="`${connection.output.c}-${connection.output.o}-${connection.input.c}-${connection.input.i}`"
+    :x1="components[connection.output.c].x + components[connection.output.c].outputs[connection.output.o].x"
+    :y1="components[connection.output.c].y + components[connection.output.c].outputs[connection.output.o].y"
+    :x2="components[connection.input.c].x + components[connection.input.c].inputs[connection.input.i].x"
+    :y2="components[connection.input.c].y + components[connection.input.c].inputs[connection.input.i].y"
+    :on="components[connection.output.c].model.outputs[connection.output.o]"
   )
   Connection(
     v-if="connectionSource"
