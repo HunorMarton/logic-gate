@@ -284,8 +284,6 @@ export default {
         })
       } else console.log('no target found')
 
-      // TODO: Delete component
-
       this.connectionSource = undefined
     },
     removeInput(index, inputKey) {
