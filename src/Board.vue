@@ -99,8 +99,7 @@ export default {
       connections: undefined,
       connectionSource: undefined,
       addedGateIndex: undefined,
-      addedGateOffsetX: undefined,
-      addedGateOffsetY: undefined
+      addedGateOffsetX: undefined
     }
   },
   created() {
@@ -185,32 +184,29 @@ export default {
       this.components.push(component)
       this.addedGateIndex = index
       this.addedGateOffsetX = 0
-      this.addedGateOffsetY = 0
     },
     dragAddedGate({ dx, dy }) {
       const component = this.components[this.addedGateIndex]
       component.x += dx
       component.y += dy
       this.addedGateOffsetX += dx
-      this.addedGateOffsetY += dy
     },
     gateAdded() {
+      const component = this.components[this.addedGateIndex]
       const dx = this.addedGateOffsetX
-      const dy = this.addedGateOffsetY
 
-      if (Math.sqrt(Math.pow(dx, 2) * Math.pow(dy, 2)) < 10) {
-        // TODO: Remove item
+      this.addedGateIndex = undefined
+      this.addedGateOffsetX = undefined
+
+      if (dx / this.zoom < 50) {
+        this.components.splice(component.index, 1)
+        return
       }
 
-      const component = this.components[this.addedGateIndex]
       if (['static', 'result'].includes(component.type)) {
         const label = prompt('Label (optional):')
         component.label = label
       }
-
-      this.addedGateIndex = undefined
-      this.addedGateOffsetX = undefined
-      this.addedGateOffsetY = undefined
     },
     drag(index, { dx, dy }) {
       const component = this.components[index]
@@ -289,7 +285,6 @@ export default {
       } else console.log('no target found')
 
       // TODO: Delete component
-      // TODO: Do not add item if it doesn't leaves the sidebar
 
       this.connectionSource = undefined
     },
